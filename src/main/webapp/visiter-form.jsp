@@ -39,14 +39,14 @@
         <tr>
             <th> Code medecin</th>
             <td>
-                <input type="number" name="codemed" size="45" value="<c:out value='${visiter.codemed}'/>"/>
+                <input type="text" name="codemed" size="45" value="<c:out value='${visiter.codemed}'/>"/>
             </td>
         </tr>
         
         <tr>
             <th> Code patient</th>
             <td>
-                <input type="number" name="codepal" size="45" value="<c:out value='${visiter.codepal}'/>"/>
+                <input type="text" name="codepal" size="45" value="<c:out value='${visiter.codepal}'/>"/>
             </td>
         </tr>
         

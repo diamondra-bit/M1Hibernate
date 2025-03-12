@@ -7,7 +7,6 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
-
 import net.javaguides.usermanagement.model.Patient;
 import net.javaguides.usermanagement.dao.PatientDAO;
 
@@ -39,6 +38,9 @@ public class PatientServlet extends HttpServlet {
                     break;
                 case "/delete":
                     deletePatient(request, response);
+                    break;
+                case "/search":
+                    searchPatients(request, response);
                     break;
                 case "/edit":
                     showEditForm(request, response);
@@ -72,43 +74,52 @@ public class PatientServlet extends HttpServlet {
 
     private void showEditForm(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, ServletException, IOException {
-        int codepal = Integer.parseInt(request.getParameter("codepal"));
+        String codepal = request.getParameter("codepal");
         Patient existingPatient = patientDao.getPatient(codepal);
         request.setAttribute("patient", existingPatient);
         RequestDispatcher dispatcher = request.getRequestDispatcher("patient-form.jsp");
         dispatcher.forward(request, response);
     }
 
-    private void insertPatient(HttpServletRequest request,HttpServletResponse response)
-    		throws SQLException,IOException {
-    			String nom=request.getParameter("nom");
-    			String prenom=request.getParameter("prenom");
-    			String sexe=request.getParameter("sexe");
-    			String adresse=request.getParameter("adresse");
-    			
-    			Patient newPatient=new Patient(nom,prenom,sexe,adresse);
-    			patientDao.savePatient(newPatient);
-    			response.sendRedirect("list");
-    		}
-
+    private void insertPatient(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, IOException {
+        String nom = request.getParameter("nom");
+        String prenom = request.getParameter("prenom");
+        String sexe = request.getParameter("sexe");
+        String adresse = request.getParameter("adresse");
+        
+        Patient newPatient = new Patient(nom, prenom, sexe, adresse);
+        patientDao.savePatient(newPatient);
+        response.sendRedirect("list");
+    }
 
     private void updatePatient(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException {
-        int codepal = Integer.parseInt(request.getParameter("codepal"));
+        String codepal = request.getParameter("codepal");
         String nom = request.getParameter("nom").trim();
         String prenom = request.getParameter("prenom").trim();
         String sexe = request.getParameter("sexe").trim();
         String adresse = request.getParameter("adresse").trim();
 
-        Patient patient = new Patient(codepal, nom, prenom, sexe,adresse);
+        Patient patient = new Patient(codepal, nom, prenom, sexe, adresse);
         patientDao.updatePatient(patient);
         response.sendRedirect("list");
     }
 
     private void deletePatient(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException {
-        int codepal = Integer.parseInt(request.getParameter("codepal"));
+        String codepal = request.getParameter("codepal");
         patientDao.deletePatient(codepal);
         response.sendRedirect("list");
+    }
+    
+    private void searchPatients(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, IOException, ServletException {
+        String keyword = request.getParameter("keyword");
+        List<Patient> listPatients = patientDao.searchPatients(keyword);
+        request.setAttribute("listPatients", listPatients);
+        request.setAttribute("keyword", keyword);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("patient-list.jsp");
+        dispatcher.forward(request, response);
     }
 }

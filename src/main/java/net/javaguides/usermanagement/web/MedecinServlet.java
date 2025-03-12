@@ -78,13 +78,12 @@ public class MedecinServlet extends HttpServlet {
 
     private void showEditForm(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, ServletException, IOException {
-        String codemedStr = request.getParameter("codemed");
-        if (codemedStr == null || codemedStr.isEmpty()) {
+        String codemed = request.getParameter("codemed");
+        if (codemed == null || codemed.isEmpty()) {
             response.sendRedirect(request.getContextPath() + "/medecin/list");
             return;
         }
 
-        int codemed = Integer.parseInt(codemedStr);
         Medecin existingMedecin = medecinDao.getMedecin(codemed);
         if (existingMedecin == null) {
             response.sendRedirect(request.getContextPath() + "/medecin/list");
@@ -114,13 +113,12 @@ public class MedecinServlet extends HttpServlet {
 
     private void updateMedecin(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException {
-        String codemedStr = request.getParameter("codemed");
-        if (codemedStr == null || codemedStr.isEmpty()) {
+        String codemed = request.getParameter("codemed");
+        if (codemed == null || codemed.isEmpty()) {
             response.sendRedirect(request.getContextPath() + "/medecin/list");
             return;
         }
 
-        int codemed = Integer.parseInt(codemedStr);
         String nom = request.getParameter("nom").trim();
         String prenom = request.getParameter("prenom").trim();
         String grade = request.getParameter("grade").trim();
@@ -137,13 +135,12 @@ public class MedecinServlet extends HttpServlet {
 
     private void deleteMedecin(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException {
-        String codemedStr = request.getParameter("codemed");
-        if (codemedStr == null || codemedStr.isEmpty()) {
+        String codemed = request.getParameter("codemed");
+        if (codemed == null || codemed.isEmpty()) {
             response.sendRedirect(request.getContextPath() + "/medecin/list");
             return;
         }
 
-        int codemed = Integer.parseInt(codemedStr);
         medecinDao.deleteMedecin(codemed);
         response.sendRedirect(request.getContextPath() + "/medecin/list");
     }

@@ -6,11 +6,11 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Medecin Application</title>
+    <title>Visiter Application</title>
 </head>
 <body>
     <div>
-        <h1>Medecin Management</h1>
+        <h1>Visiter Management</h1>
         <h2>
             <a href="${pageContext.request.contextPath}/visiter/new">Add New visiter</a>
             &nbsp;&nbsp;&nbsp;
@@ -21,7 +21,7 @@
     <div align="center">
         <table border="1">
             <tr>
-                <th>Code medecin</th>
+                <th>Code médecin</th>
                 <th>Code patient</th>
                 <th>Date</th>
                 <th>Actions</th>
@@ -33,11 +33,10 @@
             </c:if>
             <c:forEach var="visiter" items="${listVisiters}">
                 <tr>
-                    <td><c:out value="${visiter.codemed}"/></td>
-                    <td><c:out value="${visiter.codepal}"/></td>
-                    <td>
-                        <fmt:formatDate value="${visiter.date}" pattern="yyyy-MM-dd"/>
-                    </td>
+                    <!-- Accès aux codes via les associations -->
+                    <td><c:out value="${visiter.medecin.codemed}"/></td>
+                    <td><c:out value="${visiter.patient.codepal}"/></td>
+                    <td><fmt:formatDate value="${visiter.date}" pattern="yyyy-MM-dd"/></td>
                     <td>
                         <a href="${pageContext.request.contextPath}/visiter/edit?codevisiter=<c:out value='${visiter.codevisiter}'/>">Edit</a>
                         &nbsp;&nbsp;&nbsp;

@@ -8,41 +8,45 @@ import java.io.Serializable;
 @Table(name = "visiter")
 public class Visiter implements Serializable {
     
-    private static final long serialVersionUID = 1L;  // UID pour éviter les problèmes de sérialisation
+    private static final long serialVersionUID = 1L;
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    
-    @Column(name = "codevisiter",nullable = false)
+    @Column(name = "codevisiter", nullable = false)
     private Integer codevisiter;  
     
-    @Column(name = "codemed",nullable = false)
-    private Integer codemed;  // ⚠️ `Integer` au lieu de `int` pour éviter les erreurs Hibernate
-
-    @Column(name = "codepal", nullable = false)
-    private Integer codepal;  
+    // Association vers Medecin : le champ codemed sera une clé étrangère
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "codemed", referencedColumnName = "codemed")
+    private Medecin medecin;  
+    
+    // Association vers Patient : le champ codepal sera une clé étrangère
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "codepal", referencedColumnName = "codepal")
+    private Patient patient;  
     
     @Column(name = "date", nullable = false)
     private Date date;  
 
-   
-    // 🔹 Constructeur par défaut obligatoire pour Hibernate
+    // Constructeur par défaut
     public Visiter() {}
 
-    // 🔹 Constructeur sans id (Hibernate gère l'id auto)
-    public Visiter(Integer codevisiter,Integer codemed,Integer codepal,Date date) {
-        this.codevisiter = codevisiter;
-        this.codemed = codemed;
-        this.codepal = codepal;
-        this.date = date;
-    }
-    public Visiter(Integer codemed,Integer codepal,Date date) {
-         this.codemed = codemed;
-         this.codepal = codepal;
+    // Constructeur sans id (pour insertion)
+    public Visiter(Medecin medecin, Patient patient, Date date) {
+         this.medecin = medecin;
+         this.patient = patient;
          this.date = date;
     }
 
-    // 🔹 Getters et Setters
+    // Constructeur complet (pour édition, par exemple)
+    public Visiter(Integer codevisiter, Medecin medecin, Patient patient, Date date) {
+        this.codevisiter = codevisiter;
+        this.medecin = medecin;
+        this.patient = patient;
+        this.date = date;
+    }
+
+    // Getters et Setters
     public Integer getCodevisiter() {
         return codevisiter;
     }
@@ -51,28 +55,27 @@ public class Visiter implements Serializable {
         this.codevisiter = codevisiter;
     }
 
-    public Integer getCodemed() {
-        return codemed;
+    public Medecin getMedecin() {
+        return medecin;
     }
 
-    public void setCodemed(Integer codemed) {
-        this.codemed = codemed;
-    }
-    
-    public Integer getCodepal() {
-        return codepal;
+    public void setMedecin(Medecin medecin) {
+        this.medecin = medecin;
     }
 
-    public void setCodepal(Integer codepal) {
-        this.codepal = codepal;
+    public Patient getPatient() {
+        return patient;
+    }
+
+    public void setPatient(Patient patient) {
+        this.patient = patient;
     }
 
     public Date getDate() {
         return date;
     }
 
-    public void setdate(Date date) {
+    public void setDate(Date date) {
         this.date = date;
     }
-   
 }

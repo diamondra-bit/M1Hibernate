@@ -7,50 +7,51 @@ import java.io.Serializable;
 @Table(name = "patient")
 public class Patient implements Serializable {
     
-    private static final long serialVersionUID = 1L;  // UID pour éviter les problèmes de sérialisation
+    private static final long serialVersionUID = 1L;
     
+    // Le champ codepal est désormais de type String
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "codepal")
-    private Integer codepal;  // ⚠️ `Integer` au lieu de `int` pour éviter les erreurs Hibernate
-
+    @Column(name = "codepal", length = 10, nullable = false)
+    private String codepal;
+    
     @Column(name = "nom", nullable = false)
-    private String nom;  // ⚠️ Respecte les conventions camelCase
-
+    private String nom;
+    
     @Column(name = "prenom", nullable = false)
     private String prenom;
-
+    
     @Column(name = "sexe", nullable = false)
     private String sexe;
     
     @Column(name = "adresse", nullable = false)
     private String adresse;
 
-
-    // 🔹 Constructeur par défaut obligatoire pour Hibernate
+    // Constructeur par défaut obligatoire pour Hibernate
     public Patient() {}
 
-    // 🔹 Constructeur sans id (Hibernate gère l'id auto)
-    public Patient(String nom, String prenom, String sexe,String adresse) {
+    // Constructeur sans codepal (qui sera généré)
+    public Patient(String nom, String prenom, String sexe, String adresse) {
         this.nom = nom;
         this.prenom = prenom;
         this.sexe = sexe;
-        this.adresse=adresse;
+        this.adresse = adresse;
     }
-    public Patient(Integer codepal,String nom, String prenom, String sexe,String adresse) {
-    	this.codepal=codepal;
+    
+    // Constructeur complet (si besoin de définir le code manuellement)
+    public Patient(String codepal, String nom, String prenom, String sexe, String adresse) {
+        this.codepal = codepal;
         this.nom = nom;
         this.prenom = prenom;
         this.sexe = sexe;
-        this.adresse=adresse;
+        this.adresse = adresse;
     }
 
-    // 🔹 Getters et Setters
-    public Integer getCodepal() {
+    // Getters et Setters
+    public String getCodepal() {
         return codepal;
     }
 
-    public void setCodepal(Integer codepal) {
+    public void setCodepal(String codepal) {
         this.codepal = codepal;
     }
 

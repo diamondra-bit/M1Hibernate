@@ -7,44 +7,46 @@ import java.io.Serializable;
 @Table(name = "medecin")
 public class Medecin implements Serializable {
     
-    private static final long serialVersionUID = 1L;  // UID pour éviter les problèmes de sérialisation
+    private static final long serialVersionUID = 1L;
     
+    // Codemed devient une chaîne, sans auto-incrément de la base
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "codemed")
-    private Integer codemed;  // ⚠️ `Integer` au lieu de `int` pour éviter les erreurs Hibernate
-
+    @Column(name = "codemed", length = 10, nullable = false)
+    private String codemed;
+    
     @Column(name = "nom", nullable = false)
-    private String nom;  // ⚠️ Respecte les conventions camelCase
-
+    private String nom;
+    
     @Column(name = "prenom", nullable = false)
     private String prenom;
-
+    
     @Column(name = "grade", nullable = false)
     private String grade;
 
-    // 🔹 Constructeur par défaut obligatoire pour Hibernate
+    // Constructeur par défaut obligatoire pour Hibernate
     public Medecin() {}
 
-    // 🔹 Constructeur sans id (Hibernate gère l'id auto)
+    // Constructeur sans code, celui-ci sera généré automatiquement
     public Medecin(String nom, String prenom, String grade) {
         this.nom = nom;
         this.prenom = prenom;
         this.grade = grade;
     }
-    public Medecin(Integer codemed,String nom, String prenom, String grade) {
-    	this.codemed=codemed;
+    
+    // Constructeur complet (pour édition par exemple)
+    public Medecin(String codemed, String nom, String prenom, String grade) {
+        this.codemed = codemed;
         this.nom = nom;
         this.prenom = prenom;
         this.grade = grade;
     }
 
-    // 🔹 Getters et Setters
-    public Integer getCodemed() {
+    // Getters et Setters
+    public String getCodemed() {
         return codemed;
     }
 
-    public void setCodemed(Integer codemed) {
+    public void setCodemed(String codemed) {
         this.codemed = codemed;
     }
 
